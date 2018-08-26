@@ -9,11 +9,11 @@
 import os
 from setuptools import setup
 
-execfile(os.path.join('pystashop', 'version.py'))
+exec(open(os.path.join('pystashop', 'version.py')).read())
 
 setup(
     name='pystashop',
-    version=VERSION,
+    version=VERSION,    # noqa
     url='https://github.com/openlabs/pystashop/',
     author='Sharoon Thomas, Openlabs Technologies',
     author_email='info@openlabs.co.in',
