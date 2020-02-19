@@ -9,7 +9,7 @@
 import os
 from setuptools import setup
 
-execfile(os.path.join('pystashop', 'version.py'))
+exec(compile(open(os.path.join('pystashop', 'version.py'), "rb").read(), os.path.join('pystashop', 'version.py'), 'exec'))
 
 setup(
     name='pystashop',

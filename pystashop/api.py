@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """
     api
-
-
     :copyright: © 2013 by Openlabs Technologies & Consulting (P) Limited
     :license: BSD, see LICENSE for more details.
 """
@@ -43,10 +41,11 @@ class PrestaShopWebservice(object):
             self.url = self.url[:-1]
         self.key = key
         self.debug = debug
+        self._session = None
 
     @property
     def session(self):
-        if not hasattr(self, '_session'):
+        if not self._session:
             self._session = requests.Session()
             self._session.auth = (self.key, 'ignore')
         return self._session
@@ -154,7 +153,7 @@ class ResourceProxy(object):
                 else '[' + ','.join(display) + ']'
 
         if filters:
-            for key, value in filters.iteritems():
+            for key, value in list(filters.items()):
                 params['filter[%s]' % key] = '[%s]' % value
 
         if sort:
@@ -204,10 +203,9 @@ class ResourceProxy(object):
         rv = objectify.fromstring(response.content)
 
         if as_ids:
-            return map(
-                lambda r: int(r.id),
-                getattr(rv, cls.__resource__).iterchildren()
-            )
+            return [
+                int(r.id) for r in getattr(
+                    rv, cls.__resource__).iterchildren()]
 
         return getattr(rv, cls.__resource__).getchildren()
 
